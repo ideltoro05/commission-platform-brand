@@ -1,0 +1,135 @@
+/* Commission Platform brand page. Hex values are written out in full, not as variables,
+   so a brand importer reading this file finds the palette directly. */
+
+@font-face { font-family: "Geist"; font-weight: 400; font-style: normal; font-display: swap;
+  src: url("fonts/Geist-Regular.woff2") format("woff2"), url("fonts/Geist-Regular.ttf") format("truetype"); }
+@font-face { font-family: "Geist"; font-weight: 500; font-style: normal; font-display: swap;
+  src: url("fonts/Geist-Medium.woff2") format("woff2"), url("fonts/Geist-Medium.ttf") format("truetype"); }
+@font-face { font-family: "Geist"; font-weight: 600; font-style: normal; font-display: swap;
+  src: url("fonts/Geist-SemiBold.woff2") format("woff2"), url("fonts/Geist-SemiBold.ttf") format("truetype"); }
+@font-face { font-family: "Geist Mono"; font-weight: 400; font-style: normal; font-display: swap;
+  src: url("fonts/GeistMono-Regular.woff2") format("woff2"), url("fonts/GeistMono-Regular.ttf") format("truetype"); }
+@font-face { font-family: "Geist Mono"; font-weight: 500; font-style: normal; font-display: swap;
+  src: url("fonts/GeistMono-Medium.woff2") format("woff2"), url("fonts/GeistMono-Medium.ttf") format("truetype"); }
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+body { margin: 0; background: #f2f7f7; color: #04191e; font-family: "Geist", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 16px; line-height: 24px; -webkit-font-smoothing: antialiased; }
+img { display: block; max-width: 100%; height: auto; }
+a { color: #006060; text-underline-offset: 3px; }
+a:hover { color: #004b4c; }
+a:focus-visible, .button:focus-visible { outline: 2px solid #006060; outline-offset: 2px; }
+h1, h2, h3, p, ul, figure { margin: 0; }
+ul { padding: 0; list-style: none; }
+
+.wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+.mono { font-family: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace; font-variant-numeric: tabular-nums; }
+.label { font-family: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace; font-size: 11px; line-height: 16px; font-weight: 500;
+  letter-spacing: .08em; text-transform: uppercase; color: #4f5e62; }
+.signal { display: inline-block; width: 10px; height: 10px; flex: none; background: #4ae6d6; border-radius: 2px; }
+
+/* Header */
+.site-header { background: #ffffff; border-bottom: 1px solid #d8e2e2; }
+.site-header .wrap { display: flex; align-items: center; justify-content: space-between; gap: 24px; min-height: 64px; }
+.site-header .logo { width: auto; height: 36px; margin-left: -8px; }
+.site-nav { display: flex; gap: 24px; font-size: 14px; line-height: 20px; font-weight: 500; }
+.site-nav a { color: #04191e; text-decoration: none; }
+.site-nav a:hover { color: #006060; }
+
+/* Hero: the one dark field */
+.hero { position: relative; overflow: hidden; background: #001a1f; color: #f1f6f7; }
+.hero .wrap { position: relative; padding-top: 72px; padding-bottom: 72px; min-height: 440px; display: flex; flex-direction: column; }
+.hero .eyebrow { display: flex; align-items: center; gap: 12px; font-family: "Geist Mono", ui-monospace, Menlo, monospace; font-size: 13px;
+  line-height: 20px; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; color: #96b1b4; }
+.hero h1 { margin-top: auto; padding-top: 72px; max-width: 620px; font-size: 56px; line-height: 58px; font-weight: 600; letter-spacing: -.04em; }
+.hero p { margin-top: 20px; max-width: 520px; font-size: 18px; line-height: 28px; color: #96b1b4; }
+.blocks { position: absolute; top: 0; right: 0; width: 256px; height: 100%; }
+.blocks span { position: absolute; border-radius: 10px; }
+.blocks .aqua { left: 0; top: -16px; width: 272px; height: 300px; background: #4ae6d6; }
+.blocks .teal { left: 0; top: 300px; width: 120px; height: 120px; background: #006060; }
+.blocks .bone { left: 136px; top: 300px; width: 136px; height: 120px; background: #f1f6f7; }
+
+/* Sections */
+section { padding: 64px 0; }
+section + section { border-top: 1px solid #d8e2e2; }
+section h2 { font-size: 36px; line-height: 40px; font-weight: 600; letter-spacing: -.035em; }
+section .lede { margin-top: 12px; max-width: 640px; color: #4f5e62; }
+.card { background: #ffffff; border: 1px solid #d8e2e2; border-radius: 10px; }
+
+/* Colors */
+.swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; margin-top: 32px; }
+.swatches.primary { grid-template-columns: repeat(3, 1fr); }
+.swatch { overflow: hidden; }
+.swatch .chip { height: 96px; border-bottom: 1px solid #d8e2e2; }
+.swatches.primary .chip { height: 168px; }
+.swatch .body { padding: 16px 20px 20px; }
+.swatch h3 { font-size: 15px; line-height: 22px; font-weight: 600; }
+.swatch .hex { font-family: "Geist Mono", ui-monospace, Menlo, monospace; font-size: 13px; line-height: 20px; color: #04191e; }
+.swatch p { margin-top: 8px; font-size: 14px; line-height: 20px; color: #4f5e62; }
+.bg-rail { background: #001a1f; }
+.bg-aqua { background: #4ae6d6; }
+.bg-teal { background: #006060; }
+.bg-raised { background: #e8eff0; }
+.bg-surface { background: #ffffff; }
+.bg-bone { background: #f1f6f7; }
+.bg-muted { background: #96b1b4; }
+.bg-ink { background: #04191e; }
+.bg-amber { background: #ffb135; }
+.bg-flare { background: #c5002b; }
+
+/* Type */
+.specimens { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 32px; }
+.specimen { padding: 20px; }
+.specimen .family { margin-top: 20px; font-size: 56px; line-height: 58px; font-weight: 600; letter-spacing: -.04em; }
+.specimen .family.mono { font-size: 44px; font-weight: 500; letter-spacing: -.02em; }
+.specimen .sample { margin-top: 16px; }
+.specimen .title { font-size: 24px; line-height: 30px; font-weight: 600; letter-spacing: -.03em; }
+.specimen .figure { font-family: "Geist Mono", ui-monospace, Menlo, monospace; font-size: 26px; line-height: 32px; font-weight: 500; letter-spacing: -.02em; }
+.specimen .note { margin-top: 16px; font-size: 14px; line-height: 20px; color: #4f5e62; }
+.files { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-top: 16px; font-family: "Geist Mono", ui-monospace, Menlo, monospace; font-size: 13px; line-height: 20px; }
+.actions { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; margin-top: 24px; font-size: 14px; line-height: 20px; }
+.button { display: inline-flex; align-items: center; height: 40px; padding: 0 16px; border-radius: 6px; background: #006060; color: #ffffff;
+  font-size: 14px; line-height: 20px; font-weight: 500; text-decoration: none; }
+.button:hover { background: #004b4c; color: #ffffff; }
+
+/* Logo */
+.logos { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 32px; }
+.logo-panel { overflow: hidden; }
+.logo-panel .stage { display: flex; align-items: center; justify-content: center; min-height: 200px; padding: 32px; }
+.logo-panel .stage img { width: min(100%, 420px); }
+.logo-panel .stage.mark img { width: 112px; }
+.logo-panel .body { padding: 16px 20px 20px; border-top: 1px solid #d8e2e2; font-size: 14px; line-height: 20px; color: #4f5e62; }
+.logo-panel .body a { font-family: "Geist Mono", ui-monospace, Menlo, monospace; font-size: 13px; }
+
+/* Lesson frames */
+.frames { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 32px; }
+.frame { overflow: hidden; }
+.frame img { width: 100%; border-bottom: 1px solid #d8e2e2; }
+.frame figcaption { padding: 16px 20px 20px; font-size: 14px; line-height: 20px; color: #4f5e62; }
+.frame figcaption strong { display: block; color: #04191e; font-size: 15px; line-height: 22px; font-weight: 600; }
+
+/* Footer */
+.site-footer { background: #001a1f; color: #96b1b4; }
+.site-footer .wrap { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; padding-top: 32px; padding-bottom: 32px; }
+.site-footer .logo { width: auto; height: 36px; margin-left: -8px; }
+.site-footer p { font-family: "Geist Mono", ui-monospace, Menlo, monospace; font-size: 11px; line-height: 16px; letter-spacing: .08em; text-transform: uppercase; }
+
+@media (max-width: 860px) {
+  .blocks { opacity: 1; width: 120px; }
+  .blocks .aqua { width: 136px; height: 220px; }
+  .blocks .teal { top: 220px; width: 136px; height: 96px; }
+  .blocks .bone { display: none; }
+  .hero h1 { max-width: calc(100% - 120px); font-size: 40px; line-height: 44px; }
+  .hero p { max-width: calc(100% - 120px); font-size: 16px; line-height: 24px; }
+  .swatches.primary, .specimens, .logos, .frames { grid-template-columns: 1fr; }
+  .swatches.primary .chip { height: 120px; }
+  .specimen .family { font-size: 40px; line-height: 44px; }
+  .specimen .family.mono { font-size: 30px; }
+}
+@media (max-width: 560px) {
+  .wrap { padding: 0 16px; }
+  .site-nav { display: none; }
+  section { padding: 48px 0; }
+  section h2 { font-size: 28px; line-height: 32px; }
+}
