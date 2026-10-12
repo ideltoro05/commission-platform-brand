@@ -19,25 +19,35 @@ NAME = "Your EZ Payroll"
 GROUND, SURFACE, RAISED, LINE, LINE_STRONG = "#f2f7f7", "#ffffff", "#e8eff0", "#d8e2e2", "#738485"
 INK, TEXT_MUTED = "#04191e", "#4f5e62"
 RAIL, BONE, MUTED = "#001a1f", "#f1f6f7", "#96b1b4"
-TEAL, AQUA, AQUA_SOFT = "#006060", "#4ae6d6", "#d1f8f3"
+TEAL, TEAL_STRONG, AQUA, AQUA_SOFT = "#006060", "#004b4c", "#4ae6d6", "#d1f8f3"
 AMBER, FLARE, FLARE_SOFT, WHITE = "#ffb135", "#c5002b", "#ffe9e9", "#ffffff"
 
 SANS_400, SANS_500, SANS_600 = "Geist-Regular.ttf", "Geist-Medium.ttf", "Geist-SemiBold.ttf"
 MONO_400, MONO_500 = "GeistMono-Regular.ttf", "GeistMono-Medium.ttf"
 
-# The mark on a 48-unit grid: three right-aligned rows that grow, the last one aqua.
-ROWS = [(28, 0, 20, 12), (14, 18, 34, 12), (0, 36, 48, 12)]
-ROW_RADIUS = 3.5
-# variant: (row colours, name colour)
+# The mark on a 100 by 140 grid, top to bottom: a slanted bar, a slanted bar with a leg, and a block.
+# It stands for "Your"; the name beside it reads "EZ Payroll".
+MARK_W, MARK_H = 100, 140
+MARK_SHAPES = [
+    [(0, 36), (100, 0), (100, 40), (0, 76)],
+    [(0, 89), (100, 53), (100, 77), (30, 102.2), (30, 140), (0, 140)],
+    [(40, 112), (100, 112), (100, 140), (40, 140)],
+]
+MARK_CORNER = 7  # how far from each corner, along both edges, the rounding starts
+LINE_1, LINE_2 = "EZ", "Payroll"
+# variant: (shape colours top to bottom, name colour)
 VARIANTS = {
-    "light": ((TEAL, TEAL, AQUA), INK),
-    "dark": ((BONE, BONE, AQUA), BONE),
+    "light": ((AQUA, TEAL_STRONG, TEAL), INK),
+    "dark": ((AQUA, BONE, MUTED), BONE),
     "mono": ((INK, INK, INK), INK),
     "white": ((WHITE, WHITE, WHITE), WHITE),
 }
-# Horizontal lockup: 40px mark, 14px gap, 30px name at -0.03em. Stacked: a larger mark above the name.
-MARK_PER_EM, GAP_PER_EM, TRACKING, CAP, DESCENT = 40 / 30, 14 / 30, -0.03, 0.71, 0.22
-STACK_MARK_PER_EM, STACK_GAP_PER_EM = 2.4, 0.8
+# The logo: the mark, then the name on two lines. The name's first cap line sits just under the mark's
+# top and its second baseline on the mark's bottom. Sizes are in em of the name (Geist 600, -0.03em).
+MARK_PER_EM, GAP_PER_EM, TOP_PER_EM = 140 / 86, 30 / 86, 3 / 86
+TRACKING, CAP, DESCENT = -0.03, 0.71, 0.22
+# One-line form, for wide and short spaces: the mark, then "EZ Payroll" centred on it.
+LINE_MARK_PER_EM, LINE_GAP_PER_EM = 1.5, 0.42
 
 FONTS = OUT = ""
 _fonts = {}
@@ -192,25 +202,25 @@ class Frame:
 
     # ---- the logo ----
 
-    def mark(self, x, y, size, variant):
-        k = size / 48
-        for (rx, ry, rw, rh), color in zip(ROWS, VARIANTS[variant][0]):
-            self.rect(x + rx * k, y + ry * k, rw * k, rh * k, ROW_RADIUS * k, color)
+    def mark(self, x, y, height, variant):
+        k = height / MARK_H
+        for shape, color in zip(MARK_SHAPES, VARIANTS[variant][0]):
+            self.polygon([(x + px * k, y + py * k) for px, py in rounded_points(shape, MARK_CORNER)], color)
 
-    def wordmark(self, x, baseline, em, variant):
-        return self.text(x, baseline, NAME, SANS_600, em, VARIANTS[variant][1], TRACKING)
+    def logo(self, x, y, em, variant):
+        """The logo: the mark, then EZ over Payroll. y is the top of the mark."""
+        h = em * MARK_PER_EM
+        tx, ink = x + h * MARK_W / MARK_H + em * GAP_PER_EM, VARIANTS[variant][1]
+        self.mark(x, y, h, variant)
+        self.text(tx, y + em * (TOP_PER_EM + CAP), LINE_1, SANS_600, em, ink, TRACKING)
+        self.text(tx, y + h, LINE_2, SANS_600, em, ink, TRACKING)
 
-    def lockup(self, x, y, em, variant):
-        """Horizontal logo: the mark, then the name. y is the top of the mark."""
-        m = em * MARK_PER_EM
-        self.mark(x, y, m, variant)
-        self.wordmark(x + m + em * GAP_PER_EM, y + m / 2 + em * CAP / 2, em, variant)
-
-    def stacked(self, cx, y, em, variant):
-        """Stacked logo: the mark centred above the name. y is the top of the mark."""
-        m = em * STACK_MARK_PER_EM
-        self.mark(cx - m / 2, y, m, variant)
-        self.wordmark(cx - wordmark_width(em) / 2, y + m + em * (STACK_GAP_PER_EM + CAP), em, variant)
+    def logo_line(self, x, y, em, variant):
+        """One-line logo: the mark, then EZ Payroll. y is the top of the mark."""
+        h = em * LINE_MARK_PER_EM
+        self.mark(x, y, h, variant)
+        self.text(x + h * MARK_W / MARK_H + em * LINE_GAP_PER_EM, y + h / 2 + em * CAP / 2, LINE_1 + " " + LINE_2,
+                  SANS_600, em, VARIANTS[variant][1], TRACKING)
 
     def save(self, name):
         out = self.img.resize((self.w, self.h), Image.LANCZOS)
@@ -220,16 +230,40 @@ class Frame:
         return name
 
 
-def wordmark_width(em):
-    return width(NAME, SANS_600, em, TRACKING)
+def corners(points, cut):
+    """For each corner: where the rounding starts, the corner itself, and where the rounding ends."""
+    out, n = [], len(points)
+    for i, v in enumerate(points):
+        ends = []
+        for other in (points[i - 1], points[(i + 1) % n]):
+            dx, dy = other[0] - v[0], other[1] - v[1]
+            length = math.hypot(dx, dy)
+            d = min(cut, length / 2)
+            ends.append((v[0] + dx / length * d, v[1] + dy / length * d))
+        out.append((ends[0], v, ends[1]))
+    return out
 
 
-def lockup_size(em):
-    return em * (MARK_PER_EM + GAP_PER_EM) + wordmark_width(em), em * MARK_PER_EM
+def rounded_points(points, cut, steps=8):
+    """The outline with every corner rounded, as a list of points."""
+    out = []
+    for a, v, b in corners(points, cut):
+        for i in range(steps + 1):
+            t = i / steps
+            out.append(((1 - t) ** 2 * a[0] + 2 * t * (1 - t) * v[0] + t * t * b[0],
+                        (1 - t) ** 2 * a[1] + 2 * t * (1 - t) * v[1] + t * t * b[1]))
+    return out
 
 
-def stacked_size(em):
-    return max(wordmark_width(em), em * STACK_MARK_PER_EM), em * (STACK_MARK_PER_EM + STACK_GAP_PER_EM + CAP + DESCENT)
+def logo_size(em):
+    """Width and height of the logo, down to the baseline of Payroll (the y hangs below it)."""
+    text = max(width(LINE_1, SANS_600, em, TRACKING), width(LINE_2, SANS_600, em, TRACKING))
+    return em * MARK_PER_EM * MARK_W / MARK_H + em * GAP_PER_EM + text, em * MARK_PER_EM
+
+
+def logo_line_size(em):
+    return (em * LINE_MARK_PER_EM * MARK_W / MARK_H + em * LINE_GAP_PER_EM
+            + width(LINE_1 + " " + LINE_2, SANS_600, em, TRACKING), em * LINE_MARK_PER_EM)
 
 
 # ---- SVG ----
@@ -250,11 +284,16 @@ def text_path(s, name, size, x0, baseline, tracking):
     return pen.getCommands(), w_em * size
 
 
-def mark_rects(variant, x=0.0, y=0.0, size=48.0):
-    k = size / 48
-    return "".join('<rect x="%s" y="%s" width="%s" height="%s" rx="%s" fill="%s"/>'
-                   % (num(x + rx * k), num(y + ry * k), num(rw * k), num(rh * k), num(ROW_RADIUS * k), color)
-                   for (rx, ry, rw, rh), color in zip(ROWS, VARIANTS[variant][0]))
+def mark_paths(variant, x=0.0, y=0.0, height=float(MARK_H)):
+    k = height / MARK_H
+    out = []
+    for shape, color in zip(MARK_SHAPES, VARIANTS[variant][0]):
+        d = ""
+        for i, (a, v, b) in enumerate(corners([(x + px * k, y + py * k) for px, py in shape], MARK_CORNER * k)):
+            d += "%s%s %sQ%s %s %s %s" % ("M" if i == 0 else "L", num(a[0]), num(a[1]), num(v[0]), num(v[1]),
+                                          num(b[0]), num(b[1]))
+        out.append('<path d="%sZ" fill="%s"/>' % (d, color))
+    return "".join(out)
 
 
 def write_svg(name, view_w, view_h, body, label):
@@ -264,37 +303,41 @@ def write_svg(name, view_w, view_h, body, label):
     return name
 
 
-def lockup_svg(name, variant, em=100.0):
-    m = em * MARK_PER_EM
-    d, text_w = text_path(NAME, SANS_600, em, m + em * GAP_PER_EM, m / 2 + em * CAP / 2, TRACKING)
-    body = mark_rects(variant, size=m) + '<path d="%s" fill="%s"/>' % (d, VARIANTS[variant][1])
-    return write_svg(name, m + em * GAP_PER_EM + text_w, m, body, NAME)
+def logo_svg(name, variant, em=86.0):
+    w, h = logo_size(em)
+    tx, ink = h * MARK_W / MARK_H + em * GAP_PER_EM, VARIANTS[variant][1]
+    d1, _ = text_path(LINE_1, SANS_600, em, tx, em * (TOP_PER_EM + CAP), TRACKING)
+    d2, _ = text_path(LINE_2, SANS_600, em, tx, h, TRACKING)
+    body = mark_paths(variant, height=h) + '<path d="%s%s" fill="%s"/>' % (d1, d2, ink)
+    return write_svg(name, w, h + em * DESCENT, body, NAME)
 
 
-def stacked_svg(name, variant, em=100.0):
-    w, h = stacked_size(em)
-    m = em * STACK_MARK_PER_EM
-    d, text_w = text_path(NAME, SANS_600, em, (w - wordmark_width(em)) / 2, m + em * (STACK_GAP_PER_EM + CAP), TRACKING)
-    body = mark_rects(variant, x=(w - m) / 2, size=m) + '<path d="%s" fill="%s"/>' % (d, VARIANTS[variant][1])
+def logo_line_svg(name, variant, em=86.0):
+    w, h = logo_line_size(em)
+    d, _ = text_path(LINE_1 + " " + LINE_2, SANS_600, em, h * MARK_W / MARK_H + em * LINE_GAP_PER_EM,
+                     h / 2 + em * CAP / 2, TRACKING)
+    body = mark_paths(variant, height=h) + '<path d="%s" fill="%s"/>' % (d, VARIANTS[variant][1])
     return write_svg(name, w, h, body, NAME)
 
 
-def wordmark_svg(name, variant, em=100.0):
-    d, text_w = text_path(NAME, SANS_600, em, 0, em * CAP, TRACKING)
-    return write_svg(name, text_w, em * (CAP + DESCENT), '<path d="%s" fill="%s"/>' % (d, VARIANTS[variant][1]), NAME)
-
-
 def mark_svg(name, variant):
-    return write_svg(name, 48, 48, mark_rects(variant), NAME + " icon")
+    return write_svg(name, MARK_W, MARK_H, mark_paths(variant), NAME + " icon")
+
+
+# App icon: the mark on a rounded tile, on a 64 grid.
+ICON_MARK_H = 42
 
 
 def app_icon_svg(name, tile=RAIL, variant="dark"):
-    body = '<rect width="64" height="64" rx="14" fill="%s"/>' % tile + mark_rects(variant, 14, 14, 36)
+    w = ICON_MARK_H * MARK_W / MARK_H
+    body = '<rect width="64" height="64" rx="14" fill="%s"/>' % tile + mark_paths(variant, (64 - w) / 2,
+                                                                                  (64 - ICON_MARK_H) / 2, ICON_MARK_H)
     return write_svg(name, 64, 64, body, NAME + " app icon")
 
 
 def app_icon_frame(px, tile=RAIL, variant="dark"):
     f = Frame(px, px)
-    f.rect(0, 0, px, px, px * 14 / 64, tile)
-    f.mark(px * 14 / 64, px * 14 / 64, px * 36 / 64, variant)
+    k = px / 64
+    f.rect(0, 0, px, px, 14 * k, tile)
+    f.mark((64 - ICON_MARK_H * MARK_W / MARK_H) / 2 * k, (64 - ICON_MARK_H) / 2 * k, ICON_MARK_H * k, variant)
     return f

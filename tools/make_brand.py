@@ -10,11 +10,11 @@ import make_pack as pack
 from brandkit import BONE, RAIL, RAISED, SANS_600, Frame
 
 
-def logo(name, variant, bg=None, em=120):
-    w, h = k.lockup_size(em)
-    pad = h * 0.3
-    f = Frame(w + pad * 2, h + pad * 2, bg)
-    f.lockup(pad, pad, em, variant)
+def logo(name, variant, bg=None, em=150):
+    w, h = k.logo_size(em)
+    pad = h * 0.22
+    f = Frame(w + pad * 2, h + em * k.DESCENT + pad * 2, bg)
+    f.logo(pad, pad, em, variant)
     f.save(name)
 
 
@@ -25,7 +25,7 @@ def main():
     logo("logo-on-dark.png", "dark")
     logo("logo-rail.png", "dark", bg=RAIL)
     for name, variant in (("logo.svg", "light"), ("logo-on-dark.svg", "dark"), ("logo-mono.svg", "mono")):
-        k.lockup_svg(name, variant)
+        k.logo_svg(name, variant)
     for name, variant in (("mark.svg", "light"), ("mark-on-dark.svg", "dark"), ("mark-mono.svg", "mono")):
         k.mark_svg(name, variant)
     k.app_icon_svg("app-icon.svg")
@@ -43,7 +43,7 @@ def main():
 
     f = Frame(1200, 630, RAIL)
     pack.blocks_right(f, 840, 0.62)
-    f.lockup(64, 64, 34, "dark")
+    f.logo(64, 56, 28, "dark")
     f.text(64, 452, "Pay, worked out", SANS_600, 88, BONE, -0.04)
     f.text(64, 548, "line by line", SANS_600, 88, BONE, -0.04)
     f.save("social-card.png")

@@ -1,12 +1,13 @@
 # Your EZ Payroll brand assets
 
-Logos and video assets for the lesson videos, ready to upload to HeyGen. Every video image is 1920 by 1080. Open the four `overview-*.png` files first: each one shows a whole folder at a glance.
+Logos and video assets for the lesson videos, ready to upload to HeyGen. Every video image is 1920 by 1080. Open the four `overview-*.png` files first: each one shows a whole folder at a glance (the avatars folder has no overview).
 
 ## What is in each folder
 
 | Folder | What it holds | How to use it in HeyGen |
 | --- | --- | --- |
 | `logos/png` | The logo as transparent PNGs | Upload to the Brand System as logos, or place on a scene |
+| `avatars` | The four presenter images | Upload when you create or choose the avatar |
 | `logos/svg` | The same logos as vector files | For print, the website, or any tool that takes SVG |
 | `backgrounds` | 12 blank scene backgrounds, no text | Set as the scene background, then add your text and the avatar on top |
 | `frames` | 28 finished example frames with sample text | Use as a guide when you build a scene, or as a still image when the text fits |
@@ -15,16 +16,28 @@ Logos and video assets for the lesson videos, ready to upload to HeyGen. Every v
 
 ## Logos
 
+The logo is the icon, then "EZ" over "Payroll". The icon stands for "Your", so together it reads Your EZ Payroll.
+
 | File | Use it on |
 | --- | --- |
-| `logo-horizontal-dark-text` | Light backgrounds. The main logo. |
-| `logo-horizontal-white-text` | Dark backgrounds. |
-| `logo-horizontal-all-dark`, `logo-horizontal-all-white` | One color only, such as over a photo or video |
-| `logo-stacked-…` | The same four, with the icon above the name, for square or narrow spaces |
-| `wordmark-dark`, `wordmark-white` | The name alone |
+| `logo-dark-text` | Light backgrounds. The main logo. |
+| `logo-white-text` | Dark backgrounds. |
+| `logo-all-dark`, `logo-all-white` | One color only, such as over a photo or video |
+| `logo-one-line-…` | The same four with "EZ Payroll" on one line, for wide and short spaces |
 | `icon-color-for-light`, `icon-color-for-dark`, `icon-all-dark`, `icon-all-white` | The icon alone, without the name |
 | `app-icon-dark`, `app-icon-light` | The icon on a rounded tile, for profile pictures and favicons |
-| `logo-horizontal-on-rail`, `logo-horizontal-on-white` | The logo with its own background, where a transparent file will not read |
+| `logo-on-rail`, `logo-on-white` | The logo with its own background, where a transparent file will not read |
+
+## Avatars
+
+The four presenter images for the videos, kept as supplied. The sign on the wall behind her is the logo these files were redrawn from.
+
+| File | Shot |
+| --- | --- |
+| `avatar-01-standing` | Standing in front of the desk |
+| `avatar-02-seated-angled` | Seated at the desk, turned slightly |
+| `avatar-03-seated-front` | Seated at the desk, facing the camera, with the mug |
+| `avatar-04-seated-close` | Seated, closer in |
 
 ## Backgrounds
 

@@ -1,4 +1,5 @@
 """Build the Your EZ Payroll video asset pack: logos, blank backgrounds, example lesson frames and overlays.
+The avatars folder is not built here: those images are kept as supplied.
 
 Usage: python make_pack.py <fonts_dir> <out_dir>
 Frames are 1920 by 1080. The sample text comes from the Insurance Principles Lesson 1 scripts.
@@ -124,7 +125,7 @@ def title_frame(name, eyebrow_text, title, meta, logo=False, size=108):
     f = frame(RAIL)
     blocks_right(f)
     if logo:
-        f.lockup(SAFE, 84, 36, "dark")
+        f.logo(SAFE, SAFE - 20, 40, "dark")
     else:
         eyebrow(f, SAFE, 124, eyebrow_text)
     lines = wrap(title, SANS_600, size, 1240, -0.04)
@@ -139,45 +140,39 @@ def title_frame(name, eyebrow_text, title, meta, logo=False, size=108):
 def logos():
     kinds = (("dark-text", "light"), ("white-text", "dark"), ("all-dark", "mono"), ("all-white", "white"))
     for suffix, variant in kinds:
+        # The logo: the icon, then EZ over Payroll
+        em = 300
+        w, h = k.logo_size(em)
+        pad = h * 0.22
+        f = Frame(w + pad * 2, h + em * k.DESCENT + pad * 2)
+        f.logo(pad, pad, em, variant)
+        out(f, "logos/png/logo-%s.png" % suffix)
+        k.logo_svg("logos/svg/logo-%s.svg" % suffix, variant)
+
+        # One line, for wide and short spaces
         em = 240
-        w, h = k.lockup_size(em)
-        pad = h * 0.3
+        w, h = k.logo_line_size(em)
+        pad = h * 0.25
         f = Frame(w + pad * 2, h + pad * 2)
-        f.lockup(pad, pad, em, variant)
-        out(f, "logos/png/logo-horizontal-%s.png" % suffix)
-        k.lockup_svg("logos/svg/logo-horizontal-%s.svg" % suffix, variant)
+        f.logo_line(pad, pad, em, variant)
+        out(f, "logos/png/logo-one-line-%s.png" % suffix)
+        k.logo_line_svg("logos/svg/logo-one-line-%s.svg" % suffix, variant)
 
-        em = 200
-        w, h = k.stacked_size(em)
-        pad = em * 0.6
-        f = Frame(w + pad * 2, h + pad * 2)
-        f.stacked((w + pad * 2) / 2, pad, em, variant)
-        out(f, "logos/png/logo-stacked-%s.png" % suffix)
-        k.stacked_svg("logos/svg/logo-stacked-%s.svg" % suffix, variant)
-
+        # The icon alone
+        icon = {"light": "color-for-light", "dark": "color-for-dark", "mono": "all-dark", "white": "all-white"}[variant]
         f = Frame(1024, 1024)
-        f.mark(112, 112, 800, variant)
-        out(f, "logos/png/icon-%s.png" % {"light": "color-for-light", "dark": "color-for-dark",
-                                          "mono": "all-dark", "white": "all-white"}[variant])
-        k.mark_svg("logos/svg/icon-%s.svg" % {"light": "color-for-light", "dark": "color-for-dark",
-                                              "mono": "all-dark", "white": "all-white"}[variant], variant)
-
-    for suffix, variant in (("dark", "mono"), ("white", "white")):
-        em = 240
-        pad = em * 0.4
-        f = Frame(k.wordmark_width(em) + pad * 2, em * (k.CAP + k.DESCENT) + pad * 2)
-        f.wordmark(pad, pad + em * k.CAP, em, variant)
-        out(f, "logos/png/wordmark-%s.png" % suffix)
-        k.wordmark_svg("logos/svg/wordmark-%s.svg" % suffix, variant)
+        f.mark((1024 - 840 * k.MARK_W / k.MARK_H) / 2, 92, 840, variant)
+        out(f, "logos/png/icon-%s.png" % icon)
+        k.mark_svg("logos/svg/icon-%s.svg" % icon, variant)
 
     # With a background, for anywhere a transparent file will not read.
     for suffix, variant, bg in (("on-rail", "dark", RAIL), ("on-white", "light", SURFACE)):
-        em = 240
-        w, h = k.lockup_size(em)
-        pad = h * 0.6
-        f = Frame(w + pad * 2, h + pad * 2, bg)
-        f.lockup(pad, pad, em, variant)
-        out(f, "logos/png/logo-horizontal-%s.png" % suffix)
+        em = 300
+        w, h = k.logo_size(em)
+        pad = h * 0.45
+        f = Frame(w + pad * 2, h + em * k.DESCENT + pad * 2, bg)
+        f.logo(pad, pad, em, variant)
+        out(f, "logos/png/logo-%s.png" % suffix)
 
     out(k.app_icon_frame(1024), "logos/png/app-icon-dark.png")
     out(k.app_icon_frame(1024, RAISED, "light"), "logos/png/app-icon-light.png")
@@ -545,8 +540,8 @@ def frames():
     for name, bg, variant in (("frames/27-closing-logo-dark.png", RAIL, "dark"),
                               ("frames/28-closing-logo-light.png", RAISED, "light")):
         f = frame(bg)
-        w, h = k.lockup_size(132)
-        f.lockup((W - w) / 2, (H - h) / 2, 132, variant)
+        w, h = k.logo_size(150)
+        f.logo((W - w) / 2, (H - h) / 2, 150, variant)
         out(f, name)
 
 
@@ -628,7 +623,7 @@ def overview(name, folder, tile_w, tile_h, cols):
     for i, path in enumerate(files):
         x, y = gap + (i % cols) * (tile_w + gap), gap + (i // cols) * (tile_h + cap + gap)
         base = os.path.basename(path)
-        dark = any(t in base for t in ("white-text", "all-white", "for-dark", "wordmark-white", "on-white", "app-icon-light",
+        dark = any(t in base for t in ("white-text", "all-white", "for-dark", "on-white", "app-icon-light",
                                        "arrow-right-light", "card-white", "brand-blocks", "check-aqua", "signal-square",
                                        "highlight-aqua"))
         tile = Image.new("RGBA", (tile_w, tile_h), k.rgb(RAIL if dark else RAISED) + (255,))

@@ -6,8 +6,8 @@ Live at https://ideltoro05.github.io/commission-platform-brand/
 
 - `index.html`, `styles.css`: the page. Hex values are written out in full so an importer finds the palette.
 - `assets/`: the logo (SVG and PNG), icons and 1920 by 1080 lesson frames.
-- `brand-assets/`: the video asset pack for HeyGen. Logos in every variant, blank 1920 by 1080 backgrounds, example lesson frames, overlays and the fonts. Start with its `README.md` and the `overview-*.png` sheets.
-- `tools/`: `make_pack.py` rebuilds `brand-assets/` and `make_brand.py` rebuilds the page's own images; both draw with `brandkit.py` (needs `fonttools`, `uharfbuzz` and `pillow`).
+- `brand-assets/`: the video asset pack for HeyGen. Logos in every variant, the four avatar images, blank 1920 by 1080 backgrounds, example lesson frames, overlays and the fonts. Start with its `README.md` and the `overview-*.png` sheets.
+- `tools/`: `make_pack.py` rebuilds `brand-assets/` (all but `avatars/`, which is kept as supplied) and `make_brand.py` rebuilds the page's own images; both draw with `brandkit.py` (needs `fonttools`, `uharfbuzz` and `pillow`).
 - `fonts/`: Geist and Geist Mono (SIL Open Font License, see `fonts/OFL.txt`), from https://github.com/vercel/geist-font.
 
 The brand kit itself is the copy of record. Change values there first, then here.
