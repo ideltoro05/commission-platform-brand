@@ -1,4 +1,4 @@
-/* Commission Platform brand page. Hex values are written out in full, not as variables,
+/* Your EZ Payroll brand page. Hex values are written out in full, not as variables,
    so a brand importer reading this file finds the palette directly. */
 
 @font-face { font-family: "Geist"; font-weight: 400; font-style: normal; font-display: swap;
@@ -32,7 +32,7 @@ ul { padding: 0; list-style: none; }
 /* Header */
 .site-header { background: #ffffff; border-bottom: 1px solid #d8e2e2; }
 .site-header .wrap { display: flex; align-items: center; justify-content: space-between; gap: 24px; min-height: 64px; }
-.site-header .logo { width: auto; height: 36px; margin-left: -8px; }
+.site-header .logo { width: auto; height: 44px; margin-left: -8px; }
 .site-nav { display: flex; gap: 24px; font-size: 14px; line-height: 20px; font-weight: 500; }
 .site-nav a { color: #04191e; text-decoration: none; }
 .site-nav a:hover { color: #006060; }
@@ -112,7 +112,7 @@ section .lede { margin-top: 12px; max-width: 640px; color: #4f5e62; }
 /* Footer */
 .site-footer { background: #001a1f; color: #96b1b4; }
 .site-footer .wrap { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; padding-top: 32px; padding-bottom: 32px; }
-.site-footer .logo { width: auto; height: 36px; margin-left: -8px; }
+.site-footer .logo { width: auto; height: 44px; margin-left: -8px; }
 .site-footer p { font-family: "Geist Mono", ui-monospace, Menlo, monospace; font-size: 11px; line-height: 16px; letter-spacing: .08em; text-transform: uppercase; }
 
 @media (max-width: 860px) {
